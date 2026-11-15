@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
+
 import { SalasService } from './salas.service.js';
 import { CreateSalaDto } from './dto/create-sala.dto.js';
 import { UpdateSalaDto } from './dto/update-sala.dto.js';
@@ -18,17 +28,20 @@ export class SalasController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.salasService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.salasService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSalaDto: UpdateSalaDto) {
-    return this.salasService.update(+id, updateSalaDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateSalaDto: UpdateSalaDto,
+  ) {
+    return this.salasService.update(id, updateSalaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.salasService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.salasService.remove(id);
   }
 }

@@ -1,26 +1,59 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { Cliente } from './entities/cliente.entity.js';
 import { CreateClienteDto } from './dto/create-cliente.dto.js';
 import { UpdateClienteDto } from './dto/update-cliente.dto.js';
 
 @Injectable()
 export class ClientesService {
-  create(createClienteDto: CreateClienteDto) {
-    return 'This action adds a new cliente';
+  constructor(
+    @InjectRepository(Cliente)
+    private readonly clienteRepository: Repository<Cliente>,
+  ) {}
+
+  async create(createClienteDto: CreateClienteDto): Promise<Cliente> {
+    const cliente = this.clienteRepository.create(createClienteDto);
+    return this.clienteRepository.save(cliente);
   }
 
-  findAll() {
-    return `This action returns all clientes`;
+  async findAll(): Promise<Cliente[]> {
+    return this.clienteRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cliente`;
+  async findOne(id: number): Promise<Cliente> {
+    const cliente = await this.clienteRepository.findOne({
+      where: { idCliente: id },
+      relations: { boletos: { funcion: true } },
+    });
+
+    if (!cliente) {
+      throw new NotFoundException(`El cliente con id ${id} no existe`);
+    }
+
+    return cliente;
   }
 
-  update(id: number, updateClienteDto: UpdateClienteDto) {
-    return `This action updates a #${id} cliente`;
+  async update(
+    id: number,
+    updateClienteDto: UpdateClienteDto,
+  ): Promise<Cliente> {
+    const cliente = await this.findOne(id);
+    Object.assign(cliente, updateClienteDto);
+
+    return this.clienteRepository.save(cliente);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cliente`;
+  async remove(id: number) {
+    await this.findOne(id);
+    await this.clienteRepository.softDelete(id);
+
+    return {
+      mensaje: `El cliente con id ${id} fue eliminado correctamente`,
+    };
   }
 }

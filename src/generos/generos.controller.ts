@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
+
 import { GenerosService } from './generos.service.js';
 import { CreateGeneroDto } from './dto/create-genero.dto.js';
 import { UpdateGeneroDto } from './dto/update-genero.dto.js';
@@ -18,17 +28,20 @@ export class GenerosController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.generosService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.generosService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGeneroDto: UpdateGeneroDto) {
-    return this.generosService.update(+id, updateGeneroDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateGeneroDto: UpdateGeneroDto,
+  ) {
+    return this.generosService.update(id, updateGeneroDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.generosService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.generosService.remove(id);
   }
 }

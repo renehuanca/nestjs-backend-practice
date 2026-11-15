@@ -9,6 +9,7 @@ import {
   JoinColumn,
   Unique,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Funcion } from '../../funciones/entities/funcion.entity.js';
 import { Cliente } from '../../clientes/entities/cliente.entity.js';
 
@@ -35,9 +36,9 @@ export class Boleto {
 
   @ManyToOne(() => Funcion, (funcion) => funcion.boletos)
   @JoinColumn({ name: 'idFuncion' })
-  funcion: Funcion;
+  funcion: Relation<Funcion>;
 
   @ManyToOne(() => Cliente, (cliente) => cliente.boletos)
   @JoinColumn({ name: 'idCliente' })
-  cliente: Cliente;
+  cliente: Relation<Cliente>;
 }

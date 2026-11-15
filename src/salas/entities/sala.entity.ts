@@ -7,6 +7,7 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Funcion } from '../../funciones/entities/funcion.entity.js';
 
 @Entity('salas')
@@ -33,5 +34,5 @@ export class Sala {
   eliminadoEn: Date;
 
   @OneToMany(() => Funcion, (funcion) => funcion.sala)
-  funciones: Funcion[];
+  funciones: Relation<Funcion[]>;
 }

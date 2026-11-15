@@ -7,6 +7,7 @@ import {
   DeleteDateColumn,
   ManyToMany,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Pelicula } from '../../peliculas/entities/pelicula.entity.js';
 
 @Entity('generos')
@@ -30,5 +31,5 @@ export class Genero {
   eliminadoEn: Date;
 
   @ManyToMany(() => Pelicula, (pelicula) => pelicula.generos)
-  peliculas: Pelicula[];
+  peliculas: Relation<Pelicula[]>;
 }

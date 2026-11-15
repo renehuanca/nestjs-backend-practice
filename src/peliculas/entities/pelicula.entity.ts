@@ -9,6 +9,7 @@ import {
   OneToMany,
   JoinTable,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Genero } from '../../generos/entities/genero.entity.js';
 import { Funcion } from '../../funciones/entities/funcion.entity.js';
 
@@ -50,8 +51,8 @@ export class Pelicula {
       referencedColumnName: 'idGenero',
     },
   })
-  generos: Genero[];
+  generos: Relation<Genero[]>;
 
   @OneToMany(() => Funcion, (funcion) => funcion.pelicula)
-  funciones: Funcion[];
+  funciones: Relation<Funcion[]>;
 }

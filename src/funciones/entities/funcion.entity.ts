@@ -9,6 +9,7 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Sala } from '../../salas/entities/sala.entity.js';
 import { Pelicula } from '../../peliculas/entities/pelicula.entity.js';
 import { Boleto } from '../../boletos/entities/boleto.entity.js';
@@ -35,12 +36,12 @@ export class Funcion {
 
   @ManyToOne(() => Sala, (sala) => sala.funciones)
   @JoinColumn({ name: 'idSala' })
-  sala: Sala;
+  sala: Relation<Sala>;
 
   @ManyToOne(() => Pelicula, (pelicula) => pelicula.funciones)
   @JoinColumn({ name: 'idPelicula' })
-  pelicula: Pelicula;
+  pelicula: Relation<Pelicula>;
 
   @OneToMany(() => Boleto, (boleto) => boleto.funcion)
-  boletos: Boleto[];
+  boletos: Relation<Boleto[]>;
 }

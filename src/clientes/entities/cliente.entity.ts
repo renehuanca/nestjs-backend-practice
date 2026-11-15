@@ -7,6 +7,7 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Boleto } from '../../boletos/entities/boleto.entity.js';
 
 @Entity('clientes')
@@ -36,5 +37,5 @@ export class Cliente {
   eliminadoEn: Date;
 
   @OneToMany(() => Boleto, (boleto) => boleto.cliente)
-  boletos: Boleto[];
+  boletos: Relation<Boleto[]>;
 }
