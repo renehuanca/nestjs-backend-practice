@@ -1,0 +1,25 @@
+import {
+  IsIn,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  Min,
+} from 'class-validator';
+
+export class CreatePeliculaDto {
+  @IsString()
+  @IsNotEmpty()
+  titulo: string;
+
+  @IsString()
+  @IsNotEmpty()
+  sinopsis: string;
+
+  @IsInt()
+  @Min(1)
+  duracionMin: number;
+
+  @IsString()
+  @IsIn(['ATP', '+13', '+18'])
+  clasificacion: string;
+}
